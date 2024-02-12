@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import * as braze from '@braze/web-sdk';
 
-function App() {
+const App = () => {
+  useEffect(() => {
+    braze.initialize('bfe1d7a8-2c42-428e-a5fd-5757c0f6507d', {
+      baseUrl: 'sdk.fra-02.braze.eu',
+      enableLogging: true,
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* Your app components */}
     </div>
   );
-}
+};
 
 export default App;
