@@ -1,14 +1,19 @@
-import React from 'react';
+// ProductList.js
+import React from "react";
+import { useProducts, useAddToCart } from "../StateProvider";
 
-const ProductList = ({ products, addToCart }) => {
+const ProductList = () => {
+  const products = useProducts();
+  const addToCart = useAddToCart(); // Access addToCart function
+
   return (
     <div>
-      <h2>Products</h2>
+      <h2>Product List</h2>
       <ul>
-        {products.map(product => (
+        {products.map((product) => (
           <li key={product.id}>
-            {product.name} - ${product.price}
-            <button onClick={() => addToCart(product)}>Add to Cart</button>
+            {product.name} - ${product.price}{" "}
+            <button onClick={() => addToCart(product)}>Add to Cart</button> {/* Call addToCart function */}
           </li>
         ))}
       </ul>
