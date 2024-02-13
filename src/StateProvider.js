@@ -1,8 +1,8 @@
 // StateProvider.js
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import * as braze from "@braze/web-sdk";
 
 const StateContext = createContext();
-let brazeInstance; // Store Braze instance
 
 export const StateProvider = ({ children }) => {
   const [products] = useState([
@@ -10,8 +10,8 @@ export const StateProvider = ({ children }) => {
     { id: 2, name: "Product 2", price: 19.99 },
     // Add more products as needed
   ]);
-  
   const [cart, setCart] = useState([]);
+  const [brazeInitialized, setBrazeInitialized] = useState(false);
 
   const addToCart = (product) => {
     setCart([...cart, product]);
@@ -21,16 +21,26 @@ export const StateProvider = ({ children }) => {
     setCart(cart.filter((item) => item.id !== productId));
   };
 
-  const contextValue = {
-    products,
-    cart,
-    addToCart,
-    removeFromCart,
-    brazeInstance, // Pass Braze instance as context value
-  };
+  // Initialize Braze SDK
+  useEffect(() => {
+    braze.initialize("bfe1d7a8-2c42-428e-a5fd-5757c0f6507d", {
+      baseUrl: "sdk.fra-02.braze.eu",
+      enableLogging: true,
+    });
+    setBrazeInitialized(true);
+  }, []);
 
   return (
-    <StateContext.Provider value={contextValue}>
+    <StateContext.Provider
+      value={{
+        products,
+        cart,
+        addToCart,
+        removeFromCart,
+        brazeInitialized,
+        setBrazeInitialized,
+      }}
+    >
       {children}
     </StateContext.Provider>
   );
@@ -68,10 +78,10 @@ export const useRemoveFromCart = () => {
   return context.removeFromCart;
 };
 
-export const useBrazeInstance = () => {
+export const useBrazeInitialized = () => {
   const context = useContext(StateContext);
   if (!context) {
-    throw new Error("useBrazeInstance must be used within a StateProvider");
+    throw new Error("useBrazeInitialized must be used within a StateProvider");
   }
-  return context.brazeInstance;
+  return context.brazeInitialized;
 };
