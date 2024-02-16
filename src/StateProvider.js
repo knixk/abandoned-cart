@@ -51,8 +51,11 @@ export const StateProvider = ({ children }) => {
       })),
     };
 
-    braze.logCustomEvent("Abandoned Cart 2", {
-      eventProps: payload,
+    braze.logCustomEvent("Abandoned Cart 4", {
+      id: payload.cartItems.id,
+      name: payload.cartItems.name,
+      price: payload.cartItems.price,
+      image: payload.cartItems.image,
     });
 
     // Send abandoned cart event to Braze
