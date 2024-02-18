@@ -28,7 +28,7 @@ export const StateProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    sendAbandonedCartEvent(cart);
+    // sendAbandonedCartEvent(cart);
     // Send abandoned cart event when the user navigates away or closes the page
     const handleBeforeUnload = () => {
       if (cart.length > 0) {
@@ -51,15 +51,15 @@ export const StateProvider = ({ children }) => {
         image: item.image,
       })),
     };
-    console.log(payload);
+    console.log(payload.cartItems);
+    // console.log(payload.cartItems[0].name);
+    // braze.getUser().setCustomUserAttribute("items_in_cart", cart);
+
     console.log("payload");
 
-    // braze.logCustomEvent("Abandoned Cart 7", {
-    //   name: payload.cartItems[0].name,
-    //   id: payload.cartItems[0].id,
-    //   age: payload.cartItems[0].age,
-    //   image: payload.cartItems[0].image,
-    // });
+    braze.logCustomEvent("abandoned_cart", {
+      cart,
+    });
 
     // Send abandoned cart event to Braze
     // braze.logCustomEvent(payload);
