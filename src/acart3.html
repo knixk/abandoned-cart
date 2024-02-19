@@ -167,9 +167,8 @@ https://github.com/maizzle/remix/blob/master/src/templates/5-deal-shop.njk
                 <tr>
                   <td style="border-radius: 8px;" bgcolor="#ffffff">
                     <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                        <!-- eter -->
-                      {% for item in {{custom_attribute.${items_in_cart}}} %}
-
+                        <!-- enter -->
+                      {% for item in {{event_properties.${cart}}} %}
                       <tr>
                         <td align="center" style="padding: 32px;" width="50%">
                           <img src="{{item.image}}" alt style="border: 0; line-height: 100%; vertical-align: middle;">
