@@ -4,16 +4,20 @@ import * as braze from "@braze/web-sdk";
 
 export const StateContext = createContext();
 
-console.log("sending");
-
 const macbookImage =
   "https://www.aptronixindia.com/media/catalog/product/cache/31f0162e6f7d821d2237f39577122a8a/m/b/mbp14-spacegray-select-202110-removebg-preview_2__1.png";
 
+const galaxyBook =
+  "https://images.samsung.com/is/image/samsung/p6pim/in/feature/163929822/in-feature-light--powerful--made-to-move-in-style-531252377?$FB_TYPE_A_MO_JPG$";
+
+const fujitsuBook =
+  "https://www.onlinestpl.co.in/media/catalog/product/4/z/4zr1j37876.jpg";
+
 export const StateProvider = ({ children }) => {
   const [products] = useState([
-    { id: 1, name: "Product 1", price: 10.99, image: macbookImage },
-    { id: 2, name: "Product 2", price: 19.99, image: macbookImage },
-    { id: 3, name: "Product 3", price: 29.99, image: macbookImage },
+    { id: 1, name: "Macbook M2", price: 700, image: macbookImage },
+    { id: 2, name: "Galaxy Book Go", price: 600, image: galaxyBook },
+    { id: 3, name: "Fujitsu UltraBook", price: 615, image: fujitsuBook },
   ]);
   const [cart, setCart] = useState([]);
 
@@ -37,7 +41,7 @@ export const StateProvider = ({ children }) => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [cart]);
+  });
 
   const sendAbandonedCartEvent = (cartItems) => {
     // setting the cart as left items
