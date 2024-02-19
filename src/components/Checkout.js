@@ -1,9 +1,6 @@
 // Checkout.js
 import React from "react";
-import { useCart, useSetCart } from "../StateProvider";
-// import Cart from "./Cart";
-import StateContext from "../StateProvider";
-import { useContext } from "react";
+import { useSetCart } from "../StateProvider";
 import "../App.css";
 
 /* 
@@ -28,17 +25,11 @@ Content-Type: application/json
   ]
 }
 
-
-
 */
 
 const Checkout = () => {
-  //   const cart = useCart();
   const setCart = useSetCart();
-  //   const removeFromCart = useRemoveFromCart();
-
   const handleCheckout = () => {
-    // Implement checkout logic
     alert("Checkout complete!");
     setCart([]);
   };

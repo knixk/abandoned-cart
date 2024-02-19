@@ -14,7 +14,7 @@ const ProductList = () => {
           <li key={product.id}>
           <img height={200} src={product.image} alt={product.name} />
             {product.name} - ${product.price}{" "}
-            <button onClick={() => addToCart(product)}>Add to Cart</button> {/* Call addToCart function */}
+            <button onClick={() => addToCart(product)}>Add to Cart</button> 
           </li>
         ))}
       </ul>
