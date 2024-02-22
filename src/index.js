@@ -12,12 +12,6 @@ braze.initialize("bfe1d7a8-2c42-428e-a5fd-5757c0f6507d", {
 
 // Identify the current user
 braze.changeUser("1");
-// braze.setUser({ userId: '1' });
-
-// braze.logCustomEvent("Abandoned Cart 3", {
-//   name: "Macbook",
-// });
-// braze.logCustomEvent('test');
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
