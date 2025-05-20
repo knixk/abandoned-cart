@@ -43,9 +43,20 @@ export const StateProvider = ({ children }) => {
     };
   });
 
+
+  /* 
+  so what we do is basically,
+  we send an abandoned cart event right...
+  but, a major BUT,
+  we get the currents items in the cart,
+  we set it as a custom attribute right..
+  simply loop over it,
+  and present it...
+  that's it
+  */
   const sendAbandonedCartEvent = (cartItems) => {
     // setting the cart as left items
-    braze.getUser().setCustomUserAttribute("items_in_cart", cart);
+    braze.getUser().setCustomUserAttribute("items_in_cart", cartItems);
     // Send abandoned cart event to Braze
     braze.logCustomEvent("abandoned_cart");
   };
