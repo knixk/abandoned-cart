@@ -6,7 +6,12 @@ import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import { StateProvider } from "./StateProvider";
 
+import { useAnalytics } from "@segment/analytics-react";
+
 const App = () => {
+  const { page } = useAnalytics();
+  page();
+
   return (
     <StateProvider>
       <Router>

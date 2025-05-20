@@ -1,13 +1,6 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-} from "react";
+// StateProvider.js
+import React, { createContext, useState, useEffect, useContext, useRef } from "react";
 import * as braze from "@braze/web-sdk";
-
-import { useAnalytics } from "@segment/analytics-react";
 
 export const StateContext = createContext();
 
@@ -28,66 +21,16 @@ export const StateProvider = ({ children }) => {
   ]);
   const [cart, setCart] = useState([]);
 
-  const inactivityTimeout = useRef(null);
-
-  const { track, identify, page } = useAnalytics();
-
-  const resetInactivityTimer = () => {
-    if (inactivityTimeout.current) clearTimeout(inactivityTimeout.current);
-    if (cart.length > 0) {
-      inactivityTimeout.current = setTimeout(() => {
-        sendAbandonedCartEvent(cart);
-      }, 10 * 60 * 1000); // 10 minutes
-    }
+  const addToCart = (product) => {
+    setCart([...cart, product]);
   };
 
-  const sendAbandonedCartEvent = (cartItems) => {
-    // Omitting braze code for now, as we're going with the segment first integration..
-    // braze.getUser().setCustomUserAttribute("items_in_cart", cartItems);
-    // braze.logCustomEvent("abandoned_cart");
-
-    alert("Cart was abandoned..");
-
-    // Pass in the user ID, with their own implementations..
-    identify("3", {
-      name: "Kanishq Shrivastav",
-      email: "shrivastavakanishk3@gmail.com",
-      plan: "Pro",
-      joinedAt: "2025-05-20",
-      items_in_cart: cartItems,
-    });
-
-    track("abandoned_cart");
-
-    // page();
+  const removeFromCart = (productId) => {
+    setCart(cart.filter((item) => item.id !== productId));
   };
 
-  // Reset timer on cart changes
   useEffect(() => {
-    resetInactivityTimer();
-  }, [cart]);
-
-  // Reset timer on user activity
-  useEffect(() => {
-    const events = ["mousemove", "keydown", "scroll", "click"];
-
-    const handleUserActivity = () => {
-      resetInactivityTimer();
-    };
-
-    events.forEach((event) =>
-      window.addEventListener(event, handleUserActivity)
-    );
-    return () => {
-      events.forEach((event) =>
-        window.removeEventListener(event, handleUserActivity)
-      );
-      if (inactivityTimeout.current) clearTimeout(inactivityTimeout.current);
-    };
-  }, [cart]);
-
-  // Send event on page unload if cart not empty
-  useEffect(() => {
+    // Send abandoned cart event when the user navigates away or closes the page
     const handleBeforeUnload = () => {
       if (cart.length > 0) {
         sendAbandonedCartEvent(cart);
@@ -98,14 +41,24 @@ export const StateProvider = ({ children }) => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [cart]);
+  });
 
-  const addToCart = (product) => {
-    setCart([...cart, product]);
-  };
 
-  const removeFromCart = (productId) => {
-    setCart(cart.filter((item) => item.id !== productId));
+  /* 
+  so what we do is basically,
+  we send an abandoned cart event right...
+  but, a major BUT,
+  we get the currents items in the cart,
+  we set it as a custom attribute right..
+  simply loop over it,
+  and present it...
+  that's it
+  */
+  const sendAbandonedCartEvent = (cartItems) => {
+    // setting the cart as left items
+    braze.getUser().setCustomUserAttribute("items_in_cart", cartItems);
+    // Send abandoned cart event to Braze
+    braze.logCustomEvent("abandoned_cart");
   };
 
   return (
@@ -123,37 +76,42 @@ export const StateProvider = ({ children }) => {
   );
 };
 
-// Hooks remain unchanged
 export const useProducts = () => {
   const context = useContext(StateContext);
-  if (!context)
+  if (!context) {
     throw new Error("useProducts must be used within a StateProvider");
+  }
   return context.products;
 };
 
 export const useCart = () => {
   const context = useContext(StateContext);
-  if (!context) throw new Error("useCart must be used within a StateProvider");
+  if (!context) {
+    throw new Error("useCart must be used within a StateProvider");
+  }
   return context.cart;
 };
 
 export const useSetCart = () => {
   const context = useContext(StateContext);
-  if (!context)
+  if (!context) {
     throw new Error("useSetCart must be used within a StateProvider");
+  }
   return context.setCart;
 };
 
 export const useAddToCart = () => {
   const context = useContext(StateContext);
-  if (!context)
+  if (!context) {
     throw new Error("useAddToCart must be used within a StateProvider");
+  }
   return context.addToCart;
 };
 
 export const useRemoveFromCart = () => {
   const context = useContext(StateContext);
-  if (!context)
+  if (!context) {
     throw new Error("useRemoveFromCart must be used within a StateProvider");
+  }
   return context.removeFromCart;
 };
