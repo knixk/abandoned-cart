@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-// import * as braze from "@braze/web-sdk";
+import * as braze from "@braze/web-sdk";
 import { createClient, AnalyticsProvider } from "@segment/analytics-react";
 import * as amplitude from "@amplitude/analytics-browser";
 import ReactGA from "react-ga4";
@@ -24,10 +24,10 @@ const segmentClient = createClient({ writeKey: segmentWriteKey });
 
 /* Omitting the braze SDK For now... as we're using the segment integration */
 // Initialize Braze
-// braze.initialize("40c49a97-701a-48e8-b025-3eb5b62adedd", {
-//   baseUrl: "sdk.iad-03.braze.com",
-//   enableLogging: true,
-// });
+braze.initialize("40c49a97-701a-48e8-b025-3eb5b62adedd", {
+  baseUrl: "sdk.iad-03.braze.com",
+  enableLogging: true,
+});
 
 // Identify the current user in Braze
 // braze.changeUser("2");
