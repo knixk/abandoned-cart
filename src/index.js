@@ -29,6 +29,10 @@ braze.initialize("40c49a97-701a-48e8-b025-3eb5b62adedd", {
   enableLogging: true,
 });
 
+// enable this to pre-render the data..
+braze.automaticallyShowInAppMessages(); 
+braze.openSession(); // Must call to load user + content cards
+
 // Identify the current user in Braze
 // braze.changeUser("2");
 

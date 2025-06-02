@@ -1,6 +1,8 @@
 // ProductList.js
 import React from "react";
 import { useProducts, useAddToCart } from "../StateProvider";
+import * as braze from "@braze/web-sdk";
+
 
 const ProductList = () => {
   const products = useProducts();
@@ -14,7 +16,11 @@ const ProductList = () => {
           <li key={product.id}>
           <img height={200} src={product.image} alt={product.name} />
             {product.name} - ${product.price}{" "}
-            <button onClick={() => addToCart(product)}>Add to Cart</button> 
+            <button onClick={() => {
+              addToCart(product);
+              braze.logCustomEvent("add_to_cart");
+              console.log("add_to_cart event fired")
+            }}>Add to Cart</button> 
           </li>
         ))}
       </ul>
